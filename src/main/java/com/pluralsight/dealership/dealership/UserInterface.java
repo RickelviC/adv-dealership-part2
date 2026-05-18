@@ -29,7 +29,7 @@ public class UserInterface {
             System.out.println("5) Get Vehicles by mileage");
             System.out.println("6) Get Vehicles by type");
             System.out.println("7) Get All Vehicles");
-            System.out.println("8) contract menu");
+            System.out.println("8) buy/sell menu");
             System.out.println("9) quit");
             System.out.println("-----------------------");
 
