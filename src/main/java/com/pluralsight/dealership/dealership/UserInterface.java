@@ -1,5 +1,7 @@
 package com.pluralsight.dealership.dealership;
 
+import com.pluralsight.dealership.contract.SalesContract;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,9 +29,8 @@ public class UserInterface {
             System.out.println("5) Get Vehicles by mileage");
             System.out.println("6) Get Vehicles by type");
             System.out.println("7) Get All Vehicles");
-            System.out.println("8) Add Vehicle");
-            System.out.println("9) Remove Vehicle");
-            System.out.println("99) Exit");
+            System.out.println("8) contract menu");
+            System.out.println("9) quit");
             System.out.println("-----------------------");
 
             String input = scanner.nextLine().trim();
@@ -42,9 +43,8 @@ public class UserInterface {
                 case "5" -> processGetByMileageRequest(scanner);
                 case "6" -> processGetByVehicleTypeRequest(scanner);
                 case "7" -> processAllVehiclesRequest();
-                case "8" -> processAddVehicleRequest(scanner);
-                case "9" -> processRemoveVehicleRequest(scanner);
-                case "99" -> running = false;
+                case "8" -> contractMenu(scanner);
+                case "9" -> running = false;
                 default -> System.out.println("Invalid option");
             }
         }
@@ -295,6 +295,62 @@ public class UserInterface {
         }
         new DealershipFileManager().saveDealership(dealership);
     }
+    public void processSalesContract(Scanner scanner) {
+        System.out.println("enter date of sell");
+        String date = scanner.nextLine();
+
+        System.out.println("enter your name");
+        String customerName = scanner.nextLine();
+
+        System.out.println("enter your email");
+        String customerEmail = scanner.nextLine();
+
+        System.out.print("Enter the VIN of the vehicle: ");
+        int vin = scanner.nextInt();
+
+        Vehicle vehicleMatch = null;
+        boolean vehicleFound = false;
+        for (Vehicle vehicle : dealership.getAllVehicles()) {
+            if (vehicle.getVin() == vin) {
+                vehicleMatch = vehicle;
+                vehicleFound = true;
+                break;
+            }
+        }
+        if (!vehicleFound) {
+            System.out.println("Vehicle not found. Please try again.");
+            return;
+        }
+        scanner.nextLine();
+
+        System.out.println("double");
+        double salesTax = scanner.nextDouble();
+
+        System.out.println("recording fee");
+        int recordingFee = scanner.nextInt();
+
+        System.out.println("processing fee");
+        int processingFee = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("do you want to finance the vehicle(Y/N)");
+        boolean isFinanced = false;
+
+        while (scanner.nextLine().isEmpty()) {
+            if (scanner.nextLine().equalsIgnoreCase("y")) {
+                isFinanced = true;
+                break;
+            } else if (scanner.nextLine().equalsIgnoreCase("n")) {
+                break;
+            } else {
+                System.out.println("enter yes or no");
+            }
+        }
+
+        SalesContract sales = new SalesContract(date, customerName, customerEmail, vehicleMatch, salesTax, recordingFee, processingFee, isFinanced);
+
+    }
+
 
     //helpers
     private void init() {
@@ -317,6 +373,39 @@ public class UserInterface {
             System.out.println("No match found");
         }
         System.out.println("---------------------------------------------------------------------------------------------------------");
+    }
+
+    private void contractMenu(Scanner scanner){
+        boolean end = false;
+        while (!end) {
+            System.out.println("---------- Contract Menu ----------");
+            System.out.println("1. Add vehicle");
+            System.out.println("2. Remove vehicle");
+            System.out.println("3. sale a vehicles");
+            System.out.println("4. lease a vehicles");
+            System.out.println("5. quit");
+
+            System.out.print("Enter your choice: ");
+            String input = scanner.nextLine();
+
+            switch (input) {
+                case "1":
+                    processAddVehicleRequest(scanner);;
+                    break;
+                case "2":
+                    processRemoveVehicleRequest(scanner);
+                    break;
+                case "3":
+                    processSalesContract(scanner);
+                    break;
+                case "4":
+                    //processLeaseContract();
+                    break;
+                case "5":
+                    end = true;
+                    break;
+            }
+        }
     }
 
 }
