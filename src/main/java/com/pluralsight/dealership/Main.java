@@ -1,4 +1,6 @@
-package com.pluralsight;
+package com.pluralsight.dealership;
+
+import com.pluralsight.dealership.dealership.UserInterface;
 
 public class Main {
     public static void main(String[] args) {

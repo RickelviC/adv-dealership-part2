@@ -1,11 +1,11 @@
-package com.pluralsight;
+package com.pluralsight.dealership.dealership;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
 
-    private Dealership dealership = null;
+    private com.pluralsight.dealership.dealership.Dealership dealership = null;
 
     public UserInterface() {
     }
